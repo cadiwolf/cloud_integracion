@@ -1,0 +1,55 @@
+/* =====================================================================
+   POPEYES BRAND KIT · tokens.css
+   Variables base (color, tipografía, espaciado, radios, sombras).
+   Cárgalo ANTES que popeyes-kit.css. Sirve en React, Vue o HTML plano.
+   Paleta basada en los colores oficiales de Popeyes.
+   ===================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap');
+
+:root {
+  /* ---- Marca ---- */
+  --pp-orange:        #F25600;  /* primario */
+  --pp-orange-600:    #D54B00;  /* hover/activo */
+  --pp-orange-100:    #FFE6D6;  /* fondos suaves */
+  --pp-red:           #C61F32;  /* acento / acciones secundarias */
+  --pp-burgundy:      #7A1220;  /* headers / footer */
+  --pp-gold:          #F8A91B;  /* destacados "crispy" */
+
+  /* ---- Neutros ---- */
+  --pp-cream:         #FFF7EE;  /* fondo cálido */
+  --pp-sand:          #F3ECE3;  /* paneles */
+  --pp-white:         #FFFFFF;
+  --pp-ink:           #1F1F1F;  /* texto principal */
+  --pp-ink-soft:      #6B635B;  /* texto secundario */
+  --pp-line:          #E7DED3;  /* bordes */
+
+  /* ---- Estados del pedido (mapean a estadosPedido) ---- */
+  --pp-st-recibido-bg:   #E8EDF2; --pp-st-recibido-fg:   #3C4A59;
+  --pp-st-cocina-bg:     #FFE2CC; --pp-st-cocina-fg:     #B23B00;
+  --pp-st-despacho-bg:   #FDEFC7; --pp-st-despacho-fg:   #8A6200;
+  --pp-st-reparto-bg:    #DCE8FB; --pp-st-reparto-fg:    #1B4E8A;
+  --pp-st-entregado-bg:  #DDF3E2; --pp-st-entregado-fg:  #1E7A3D;
+
+  /* ---- Tipografía ---- */
+  --pp-font-display: "Fredoka", system-ui, sans-serif;
+  --pp-font-body:    "Nunito Sans", system-ui, sans-serif;
+
+  --pp-fs-xs:   0.75rem;
+  --pp-fs-sm:   0.875rem;
+  --pp-fs-md:   1rem;
+  --pp-fs-lg:   1.25rem;
+  --pp-fs-xl:   1.625rem;
+  --pp-fs-2xl:  2.25rem;
+  --pp-fs-3xl:  3.25rem;
+
+  /* ---- Espaciado ---- */
+  --pp-sp-1: 4px;  --pp-sp-2: 8px;  --pp-sp-3: 12px;
+  --pp-sp-4: 16px; --pp-sp-5: 24px; --pp-sp-6: 32px; --pp-sp-8: 48px;
+
+  /* ---- Radios y sombras ---- */
+  --pp-radius:    14px;
+  --pp-radius-sm: 8px;
+  --pp-radius-pill: 999px;
+  --pp-shadow:    0 6px 20px rgba(122,18,32,0.10);
+  --pp-shadow-sm: 0 2px 8px rgba(31,31,31,0.08);
+}

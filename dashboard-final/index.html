@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Gerencial - Popeyes</title>
+    <link rel="stylesheet" href="tokens.css">
+    <link rel="stylesheet" href="popeyes-kit.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="pp-app">
+    <header class="pp-header">
+        <div class="pp-logo">
+            <span class="pp-logo__mark">🍗</span>
+            <span class="pp-logo__name">POPEYES DASHBOARD</span>
+        </div>
+    </header>
+
+    <main class="pp-container">
+        <div class="pp-section-title">
+            <h2 class="pp-h2">Métricas Operativas en Tiempo Real</h2>
+        </div>
+        
+        <div class="pp-grid">
+            <article class="pp-card">
+                <div class="pp-card__body">
+                    <div class="pp-card__name">Distribución de Pedidos</div>
+                    <canvas id="metricasChart"></canvas>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <script>
+        // REEMPLAZA ESTA URL CON LA QUE OBTUVISTE AL DESPLEGAR TU BACKEND
+        const API_URL = "https://pd3j348k9k.execute-api.us-east-1.amazonaws.com/integ/metrics"; 
+        
+        // Simulación de Token (en un entorno real esto viene del login de Cognito del Integrante 4)
+        const mockToken = "eyJraWQiOiJIckpFeGtzUEd6d2FvaVVzNys4OEQ1ZHExNkk2cVFUNFRLMUdpczQyaWF3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkNGQ4YzQzOC05MDYxLTcwNmYtN2VlNy01ZjFjOTMyNGMwNjQiLCJjb2duaXRvOmdyb3VwcyI6WyJjbGllbnRlIl0sImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczovL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tL3VzLWVhc3QtMV9jbDd6SG5wMHUiLCJjb2duaXRvOnVzZXJuYW1lIjoiZDRkOGM0MzgtOTA2MS03MDZmLTdlZTctNWYxYzkzMjRjMDY0IiwiY3VzdG9tOnRlbmFudF9pZCI6ImRlbW8iLCJvcmlnaW5fanRpIjoiNjNmZWZhNzUtNDM0Yy00ZDRlLTkyODctZDViN2M1NmYxNWM3IiwiYXVkIjoiNGc2bGlkdGhpZXZubzNpcmluY2d1NG5lYW4iLCJldmVudF9pZCI6IjU2ZGM5MzAzLWYxNGMtNDRhYi1iYzA0LWVkMThlNmIxOTU3MSIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzgyNTgxODkyLCJleHAiOjE3ODI1ODU0OTIsImlhdCI6MTc4MjU4MTg5MiwianRpIjoiMGYzN2VhZDgtODM2OS00ZmE2LWIyMmEtYzIyMzIxYmJiZGMxIiwiZW1haWwiOiJjbGllbnRlLmRlbW9AZXhhbXBsZS5jb20ifQ.reHh7uaJtll5j5pwhqD3vOEDlL6E9ak1qYzPhffjvijVULcg14tqvoY1OI6mZ3nxSD6U--N0oupd6xlVedWmEj1QY3fhCWet_pBG1y4DpO7xXhqQCIyKpe9CQ7G_fQRb8_zMZaipblrmn8KT_iZFIdCgW9HYtmMmRVitnAhwcSf8mL_fQAHEv1A-pSNejtCni_w6svvVh8gRzhljpmegnEwU6xGzuGtdJQSLmPNTzp9oaKCdSJHkyRUOf0vqRdiel0qikIfVyD4riJltB8mDOOmM5Kx5YApW9MvXR4bSj4lMFun9jpXRWx4LsSyM7VdrkaAhGKuzjnbOe4UYUuroaA";
+
+        async function cargarMetricas() {
+            try {
+                const response = await fetch(API_URL, {
+                    headers: { 'Authorization': `Bearer ${mockToken}` }
+                });
+                const data = await response.json();
+                
+                renderizarGrafico(data.porEstado);
+            } catch (error) {
+                console.error("Error al cargar métricas:", error);
+            }
+        }
+
+        function renderizarGrafico(estados) {
+            const ctx = document.getElementById('metricasChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Recibido', 'En Cocina', 'En Despacho', 'En Reparto', 'Entregado'],
+                    datasets: [{
+                        data: [
+                            estados.RECIBIDO || 0,
+                            estados.EN_COCINA || 0,
+                            estados.EN_DESPACHO || 0,
+                            estados.EN_REPARTO || 0,
+                            estados.ENTREGADO || 0
+                        ],
+                        backgroundColor: [
+                            '#E8EDF2', // Recibido
+                            '#FFE2CC', // Cocina
+                            '#FDEFC7', // Despacho
+                            '#DCE8FB', // Reparto
+                            '#DDF3E2'  // Entregado
+                        ]
+                    }]
+                }
+            });
+        }
+
+        // Iniciar la carga al abrir la página
+        cargarMetricas();
+    </script>
+</body>
+</html>

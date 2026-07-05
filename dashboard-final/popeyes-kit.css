@@ -1,0 +1,118 @@
+/* =====================================================================
+   POPEYES BRAND KIT · popeyes-kit.css
+   Componentes reutilizables para la app Cliente y la app Trabajadores.
+   Requiere tokens.css cargado antes. Todas las clases usan prefijo .pp-
+   ===================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body.pp-app {
+  margin: 0;
+  font-family: var(--pp-font-body);
+  color: var(--pp-ink);
+  background: var(--pp-cream);
+  font-size: var(--pp-fs-md);
+  line-height: 1.5;
+}
+
+.pp-h1, .pp-h2, .pp-h3 { font-family: var(--pp-font-display); font-weight: 700; margin: 0; line-height: 1.1; }
+.pp-h1 { font-size: var(--pp-fs-3xl); letter-spacing: -0.01em; }
+.pp-h2 { font-size: var(--pp-fs-2xl); }
+.pp-h3 { font-size: var(--pp-fs-lg); }
+.pp-muted { color: var(--pp-ink-soft); }
+
+/* ---------- Logo placeholder (reemplazar por asset oficial en S3) ---------- */
+.pp-logo { display: inline-flex; align-items: center; gap: var(--pp-sp-2); text-decoration: none; }
+.pp-logo__mark {
+  width: 38px; height: 38px; border-radius: var(--pp-radius-pill);
+  background: var(--pp-orange); display: grid; place-items: center;
+  font-size: 20px; box-shadow: inset 0 0 0 3px rgba(255,255,255,0.35);
+}
+.pp-logo__name { font-family: var(--pp-font-display); font-weight: 700; font-size: var(--pp-fs-lg); color: var(--pp-white); letter-spacing: 0.02em; }
+
+/* ---------- Header / navbar ---------- */
+.pp-header {
+  background: var(--pp-burgundy); color: var(--pp-white);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--pp-sp-3) var(--pp-sp-5); gap: var(--pp-sp-4);
+}
+.pp-header__nav { display: flex; gap: var(--pp-sp-5); }
+.pp-header__nav a { color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 600; }
+.pp-header__nav a:hover { color: var(--pp-white); }
+
+/* ---------- Hero ---------- */
+.pp-hero {
+  background: linear-gradient(135deg, var(--pp-orange) 0%, var(--pp-red) 100%);
+  color: var(--pp-white); padding: var(--pp-sp-8) var(--pp-sp-5); text-align: center;
+}
+.pp-hero .pp-h1 { color: var(--pp-white); }
+.pp-hero p { font-size: var(--pp-fs-lg); margin: var(--pp-sp-3) 0 0; opacity: 0.95; }
+
+/* ---------- Botones ---------- */
+.pp-btn {
+  font-family: var(--pp-font-display); font-weight: 600; font-size: var(--pp-fs-md);
+  border: 0; border-radius: var(--pp-radius-pill); padding: 11px 22px;
+  cursor: pointer; display: inline-flex; align-items: center; gap: var(--pp-sp-2);
+  transition: transform .08s ease, background-color .15s ease;
+}
+.pp-btn:active { transform: translateY(1px); }
+.pp-btn--primary { background: var(--pp-orange); color: var(--pp-white); }
+.pp-btn--primary:hover { background: var(--pp-orange-600); }
+.pp-btn--secondary { background: var(--pp-red); color: var(--pp-white); }
+.pp-btn--ghost { background: transparent; color: var(--pp-orange); box-shadow: inset 0 0 0 2px var(--pp-orange); }
+.pp-btn--ghost:hover { background: var(--pp-orange-100); }
+.pp-btn:focus-visible { outline: 3px solid var(--pp-gold); outline-offset: 2px; }
+
+/* ---------- Card de producto (app Cliente) ---------- */
+.pp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--pp-sp-5); }
+.pp-card {
+  background: var(--pp-white); border: 1px solid var(--pp-line);
+  border-radius: var(--pp-radius); overflow: hidden; box-shadow: var(--pp-shadow-sm);
+  display: flex; flex-direction: column; transition: box-shadow .15s ease, transform .15s ease;
+}
+.pp-card:hover { box-shadow: var(--pp-shadow); transform: translateY(-2px); }
+.pp-card__img { aspect-ratio: 4 / 3; background: var(--pp-sand); display: grid; place-items: center; font-size: 44px; }
+.pp-card__body { padding: var(--pp-sp-4); display: flex; flex-direction: column; gap: var(--pp-sp-2); flex: 1; }
+.pp-card__name { font-family: var(--pp-font-display); font-weight: 600; font-size: var(--pp-fs-md); }
+.pp-card__desc { font-size: var(--pp-fs-sm); color: var(--pp-ink-soft); flex: 1; }
+.pp-card__foot { display: flex; align-items: center; justify-content: space-between; margin-top: var(--pp-sp-2); }
+.pp-price { font-family: var(--pp-font-display); font-weight: 700; font-size: var(--pp-fs-lg); color: var(--pp-burgundy); }
+
+/* ---------- Pills de estado del pedido ---------- */
+.pp-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: var(--pp-radius-pill);
+  font-size: var(--pp-fs-sm); font-weight: 700; white-space: nowrap;
+}
+.pp-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.pp-pill--recibido   { background: var(--pp-st-recibido-bg);  color: var(--pp-st-recibido-fg); }
+.pp-pill--cocina     { background: var(--pp-st-cocina-bg);    color: var(--pp-st-cocina-fg); }
+.pp-pill--despacho   { background: var(--pp-st-despacho-bg);  color: var(--pp-st-despacho-fg); }
+.pp-pill--reparto    { background: var(--pp-st-reparto-bg);   color: var(--pp-st-reparto-fg); }
+.pp-pill--entregado  { background: var(--pp-st-entregado-bg); color: var(--pp-st-entregado-fg); }
+
+/* ---------- Inputs ---------- */
+.pp-input, .pp-select {
+  font-family: var(--pp-font-body); font-size: var(--pp-fs-md);
+  padding: 10px 14px; border: 1px solid var(--pp-line); border-radius: var(--pp-radius-sm);
+  background: var(--pp-white); color: var(--pp-ink); width: 100%;
+}
+.pp-input:focus, .pp-select:focus { outline: 3px solid var(--pp-orange-100); border-color: var(--pp-orange); }
+
+/* ---------- Tabla (app Trabajadores / dashboard) ---------- */
+.pp-table { width: 100%; border-collapse: collapse; background: var(--pp-white); border-radius: var(--pp-radius); overflow: hidden; box-shadow: var(--pp-shadow-sm); }
+.pp-table th { background: var(--pp-sand); text-align: left; font-family: var(--pp-font-display); font-weight: 600; font-size: var(--pp-fs-sm); padding: var(--pp-sp-3) var(--pp-sp-4); color: var(--pp-ink); }
+.pp-table td { padding: var(--pp-sp-3) var(--pp-sp-4); border-top: 1px solid var(--pp-line); font-size: var(--pp-fs-sm); }
+.pp-table tr:hover td { background: var(--pp-cream); }
+
+/* ---------- Footer ---------- */
+.pp-footer { background: var(--pp-burgundy); color: rgba(255,255,255,0.85); padding: var(--pp-sp-5); text-align: center; font-size: var(--pp-fs-sm); }
+
+/* ---------- Utilidades ---------- */
+.pp-container { max-width: 1100px; margin: 0 auto; padding: var(--pp-sp-6) var(--pp-sp-5); }
+.pp-section-title { display: flex; align-items: center; gap: var(--pp-sp-3); margin-bottom: var(--pp-sp-5); }
+.pp-section-title::after { content: ""; flex: 1; height: 3px; background: var(--pp-orange); border-radius: 3px; opacity: 0.35; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pp-btn, .pp-card { transition: none; }
+}
