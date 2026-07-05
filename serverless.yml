@@ -1,0 +1,70 @@
+# ============================================================================
+#  Microservicio: pp-integ (Integrante 3 - Integración Multi-Nube)
+# ============================================================================
+service: pp-integ
+
+provider:
+  name: aws
+  region: us-east-1
+  runtime: python3.12
+  stage: dev
+
+  # ---- CLAVE EN ACADEMY: usar LabRole ----
+  iam:
+    role: arn:aws:iam::${aws:accountId}:role/LabRole
+
+  # ---- API protegida con el Cognito compartido ----
+  httpApi:
+    authorizers:
+      cognitoJwt:
+        type: jwt
+        identitySource: $request.header.Authorization
+        issuerUrl: https://cognito-idp.${aws:region}.amazonaws.com/${ssm:/pp/userPoolId}
+        audience:
+          - ${ssm:/pp/userPoolClientId}
+
+  environment:
+    EVENT_BUS: ${ssm:/pp/eventBusName}
+    TABLE: pp-integ-table
+    # Aquí inyectamos tu endpoint de OCI recuperado
+    OCI_ENDPOINT: "https://bydnduhnlu6dcbz7gx4w6n4kmi.apigateway.sa-bogota-1.oci.customer-oci.com/api/status"
+
+functions:
+  # 1. API Analítica para el Dashboard
+  dashboardMetrics:
+    handler: handler.dashboardMetrics
+    events:
+      - httpApi:
+          path: /integ/metrics
+          method: get
+          authorizer:
+            name: cognitoJwt
+
+  # 2. Lógica Serverless Unificada (Eventos -> DynamoDB -> OCI)
+  onEvento:
+    handler: handler.onEvento
+    events:
+      - eventBridge:
+          eventBus: arn:aws:events:us-east-1:${aws:accountId}:event-bus/pp-bus
+          pattern:
+            source:
+              - pp.orders
+              - pp.kitchen
+            detail-type:
+              - order.created
+              - step.completed
+
+resources:
+  Resources:
+    # Persistencia Aislada Multi-Tenant
+    TablaInteg:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: pp-integ-table
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - { AttributeName: tenant_id, AttributeType: S }
+          - { AttributeName: order_id, AttributeType: S }
+        KeySchema:
+          - { AttributeName: tenant_id, KeyType: HASH }
+          - { AttributeName: order_id, KeyType: RANGE }
